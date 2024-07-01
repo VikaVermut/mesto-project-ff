@@ -1,7 +1,6 @@
-import {openImagePopup} from './index.js';
 const cardTemplete = document.querySelector('#card-template').content;
 
-export function createCard(title, image, deleteHandler, likeHandler) {
+export function createCard(title, image, deleteHandler, likeHandler, openImagePopup) {
   const cardElement = cardTemplete.querySelector('.card').cloneNode(true);
   cardElement.querySelector('.card__image').src = image;
   cardElement.querySelector('.card__title').textContent = title;

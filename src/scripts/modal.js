@@ -1,6 +1,7 @@
 function escHandler(event) {
+  if (event.key !== 'Escape') return; 
   const popup = document.querySelector('.popup_is-opened');
-  if (event.key === 'Escape') closeModal(popup);
+  closeModal(popup);
 }
 
 export function openModal(popup) {
@@ -11,4 +12,10 @@ export function openModal(popup) {
 export function closeModal(popup) {
   popup.classList.remove('popup_is-opened');
   document.removeEventListener('keydown', escHandler);
+}
+
+export function closePopupByOverlay(event) {
+  if (!event.target.classList.contains('popup')) return;
+  const popup = event.target
+  closeModal(popup);
 }

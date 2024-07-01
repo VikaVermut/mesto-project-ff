@@ -2,7 +2,7 @@ import '../pages/index.css';
 
 import initialCards from './cards.js';
 import {createCard, deleteCard, likeCard} from './card.js';
-import {openModal, closeModal} from './modal.js';
+import {openModal, closeModal, closePopupByOverlay} from './modal.js';
 
 const placesListElement = document.querySelector('.places__list');
 
@@ -10,20 +10,20 @@ const popupEdit = document.querySelector('.popup_type_edit');
 const popupEditFormElement = popupEdit.querySelector('.popup__form');
 const popupNewCard = document.querySelector('.popup_type_new-card');
 const popupNewCardFormElement = popupNewCard.querySelector('.popup__form');
+const popupImage = document.querySelector('.popup_type_image');
 
 
 for (const item of initialCards) {
-  const card = createCard(item.name, item.link, deleteCard, likeCard);
+  const card = createCard(item.name, item.link, deleteCard, likeCard, openImagePopup);
   placesListElement.append(card);
 }
 
-export function openImagePopup(imgUrl, alt) {
-  const popup = document.querySelector('.popup_type_image');
-  const imgEl = popup.querySelector('img');
+function openImagePopup(imgUrl, alt) {
+  const imgEl = popupImage.querySelector('img');
   imgEl.src = imgUrl;
   imgEl.alt = alt;
-  popup.querySelector('.popup__caption').textContent = alt;
-  openModal(popup);
+  popupImage.querySelector('.popup__caption').textContent = alt;
+  openModal(popupImage);
 }
 
 function popupEditPreOpen() {
@@ -57,11 +57,10 @@ function popupNewCardHandler(evt) {
   const nameInput = popupNewCardFormElement.querySelector('input[name="place-name"]');
   const linkInput = popupNewCardFormElement.querySelector('input[name="link"]');
 
-  const card = createCard(nameInput.value, linkInput.value, deleteCard, likeCard);
-  document.querySelector('.places__list').prepend(card);
+  const card = createCard(nameInput.value, linkInput.value, deleteCard, likeCard, openImagePopup);
+  placesListElement.prepend(card);
   closeModal(popupNewCard);
-  nameInput.value = '';
-  linkInput.value = '';
+  popupNewCardFormElement.reset();
 }
 popupNewCardFormElement.addEventListener('submit', popupNewCardHandler);
 document.querySelector('.profile__add-button').addEventListener('click', () => {
@@ -74,9 +73,5 @@ popups.forEach(el => {
     const popup = event.target.closest('.popup');
     closeModal(popup);
   });
-  el.addEventListener('click', (event) => {
-    if (!event.target.classList.contains('popup')) return;
-    const popup = event.target
-    closeModal(popup);
-  })
+  el.addEventListener('click', closePopupByOverlay)
 });
