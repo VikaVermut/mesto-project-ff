@@ -13,6 +13,9 @@
   transition: visibility 0s, background 0.3s;
   margin-top: 48px;
 }
+.popup__button_disabled {
+
+}
 
 .popup__button:hover {
   background: rgba(0, 0, 0, 0.8);
