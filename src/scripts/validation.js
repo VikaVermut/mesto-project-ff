@@ -1,8 +1,7 @@
 const showInputError = (formInput, config, errorMessage) => {
   formInput.classList.add(config.inputErrorClass);
   const errorMessageElement = formInput.nextElementSibling;
-  console.log(errorMessageElement);
-  if (!errorMessageElement.classList.contains('popup__error')) return;
+  if (!errorMessageElement.classList.contains(config.errorElemClass)) return;
 
   errorMessageElement.textContent = errorMessage;
   errorMessageElement.classList.add(config.errorClass)
@@ -44,11 +43,9 @@ export function clearValidation(form, config) {
   const formBtn = form.querySelector(config.submitButtonSelector);
   formBtn.disabled = true;
   formBtn.classList.add(config.inactiveButtonClass);
-  const errorMessageElements = form.querySelectorAll('.popup__error')
-  errorMessageElements.forEach((errorMessageElement) => {
-    errorMessageElement.textContent = '';
-    errorMessageElement.classList.remove(config.errorClass);
-  });
+  
+  const formInputs = form.querySelectorAll(config.inputSelector);
+  formInputs.forEach(formInput => hideInputError(formInput, config));
 }
 
 export function enableValidation(config) {
